@@ -117,6 +117,11 @@ class SpaceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $space = Space::findOrFail($id);
+        if ($space->user_id != request()->user()->id) {
+            return redirect()->back();
+        }
+        $space->delete();
+        return redirect()->route('space.index')->with('status', 'Space deleted!');
     }
 }
